@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gmail Signature Builder — Muhammad Rohan</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+  <div class="max-w-3xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 mb-2">
+            100% Gmail Compatible HTML Table
+          </span>
+          <h1 class="text-xl md:text-2xl font-bold text-slate-900">Professional Gmail Signature</h1>
+          <p class="text-sm text-slate-500 mt-1">Click <strong>"Copy Signature for Gmail"</strong> below, then press <strong>Ctrl+V</strong> inside Gmail Settings &rarr; Signature.</p>
+        </div>
+        <button id="copyBtn" type="button" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-sm transition cursor-pointer shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+          </svg>
+          <span id="copyBtnText">Copy Signature for Gmail</span>
+        </button>
+      </div>
+      <div id="toastBanner" class="hidden mt-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-medium flex items-center justify-between">
+        <span>Signature copied with vertical line &amp; formatting! Now go to <strong>Gmail Settings &rarr; Signature</strong> and press <strong>Ctrl + V</strong> (or Cmd + V).</span>
+      </div>
+    </div>
+
+    <!-- Live Gmail Preview Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="bg-slate-100 border-b border-slate-200 px-5 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-red-400"></span>
+          <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+          <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+          <span class="text-xs font-medium text-slate-500 ml-2">New Message — Live Gmail Preview</span>
+        </div>
+        <span class="text-xs text-slate-400">Select manually or use Copy button</span>
+      </div>
+
+      <div class="p-6 md:p-8 bg-white">
+        <div class="text-sm text-slate-600 mb-6 space-y-2 border-b border-dashed border-slate-200 pb-5">
+          <p>Hey team,</p>
+          <p>I recorded a quick 50 second screen video showing what homeowners see when clicking your listing and how to push you into the Top 3 Map Pack. Should I send the video over?</p>
+        </div>
+
+        <!-- ACTUAL SIGNATURE CONTAINER TO COPY -->
+        <div id="signaturePreviewContainer" class="py-2 select-all"></div>
+      </div>
+    </div>
+
+    <!-- Quick Customization Controls -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h2 class="text-base font-bold text-slate-900">Customize Links &amp; Style (Optional)</h2>
+        <button id="resetBtn" type="button" class="text-xs font-medium text-blue-600 hover:underline">Reset to Default</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="inputName" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Full Name</label>
+          <input id="inputName" type="text" value="Muhammad Rohan" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label for="inputTitle" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Title / Headline</label>
+          <input id="inputTitle" type="text" value="LOCAL SEO & GOOGLE MAPS SPECIALIST" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="md:col-span-2">
+          <label for="inputTagline" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Value Proposition / Tagline</label>
+          <input id="inputTagline" type="text" value="Helping Home Improvement & Tree Care Contractors Rank in the Top 3 Map Pack" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label for="inputPhone" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Direct Phone</label>
+          <input id="inputPhone" type="text" value="+92 312 6664041" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label for="inputEmail" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Email Address</label>
+          <div class="flex gap-2">
+            <input id="inputEmail" type="email" value="Raffayrohan@gmail.com" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button id="swapEmailBtn" type="button" title="Switch between Raffayrohan and malikmohammadrohan" class="px-2.5 py-2 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg shrink-0 transition">Switch Email</button>
+          </div>
+        </div>
+        <div>
+          <label for="inputLinkedin" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">LinkedIn Profile URL</label>
+          <input id="inputLinkedin" type="url" value="https://www.linkedin.com/" placeholder="https://www.linkedin.com/in/your-profile" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Left Line Accent Color &amp; Options</label>
+          <div class="flex items-center gap-3 pt-1">
+            <button type="button" data-color="#1a73e8" class="color-swatch w-7 h-7 rounded-full bg-[#1a73e8] ring-2 ring-offset-2 ring-blue-600" title="Google Maps Blue"></button>
+            <button type="button" data-color="#15803d" class="color-swatch w-7 h-7 rounded-full bg-[#15803d]" title="Tree Care Emerald"></button>
+            <button type="button" data-color="#0f172a" class="color-swatch w-7 h-7 rounded-full bg-[#0f172a]" title="Executive Slate"></button>
+            <button type="button" data-color="#d97706" class="color-swatch w-7 h-7 rounded-full bg-[#d97706]" title="Contractor Amber"></button>
+            <label class="inline-flex items-center gap-1.5 ml-3 text-xs font-medium text-slate-700 cursor-pointer">
+              <input id="toggleWhatsapp" type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+              <span>Show WhatsApp Link</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step-by-Step Instructions -->
+    <div class="bg-blue-50/70 rounded-2xl border border-blue-100 p-5 text-sm text-slate-700 space-y-2">
+      <h3 class="font-semibold text-slate-900">Gmail mein lagane ka asaan tareeqa (30 Seconds):</h3>
+      <ol class="list-decimal list-inside space-y-1 text-slate-600">
+        <li>Upar apna <strong>LinkedIn URL</strong> paste karein aur <strong>"Copy Signature for Gmail"</strong> button dabayein.</li>
+        <li>Gmail open karein &rarr; upar right side par <strong>Settings (Gear icon)</strong> &rarr; <strong>See all settings</strong> par click karein.</li>
+        <li>Neeche <strong>Signature</strong> section mein jayein, <strong>+ Create new</strong> dabayein, aur box mein <strong>Ctrl + V</strong> (paste) kar dein.</li>
+        <li>Page ke bilkul neeche ja kar <strong>Save Changes</strong> par click kar dein.</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      name: 'Muhammad Rohan',
+      title: 'LOCAL SEO & GOOGLE MAPS SPECIALIST',
+      tagline: 'Helping Home Improvement & Tree Care Contractors Rank in the Top 3 Map Pack',
+      phone: '+92 312 6664041',
+      email: 'Raffayrohan@gmail.com',
+      linkedin: 'https://www.linkedin.com/',
+      color: '#1a73e8',
+      showWhatsapp: false
+    };
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function buildSignatureHtml() {
+      const cleanTel = state.phone.replace(/[^+\d]/g, '');
+      const cleanWa = state.phone.replace(/[^\d]/g, '');
+      const whatsappHtml = state.showWhatsapp
+        ? ` &nbsp;<span style="color: #cbd5e1;">|</span>&nbsp; <a href="https://wa.me/${escapeHtml(cleanWa)}" target="_blank" style="color: #15803d; font-weight: 600; text-decoration: none;">WhatsApp</a>`
+        : '';
+
+      return `<table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.45; color: #334155; border-collapse: collapse;">
+  <tr>
+    <td style="border-left: 4px solid ${escapeHtml(state.color)}; padding-left: 14px; padding-top: 2px; padding-bottom: 2px;">
+      <div style="font-size: 17px; font-weight: 700; color: #0f172a; letter-spacing: 0.2px; margin-bottom: 2px;">${escapeHtml(state.name)}</div>
+      <div style="font-size: 11px; font-weight: 700; color: ${escapeHtml(state.color)}; letter-spacing: 0.9px; text-transform: uppercase; margin-bottom: 4px;">${escapeHtml(state.title)}</div>
+      <div style="font-size: 12.5px; font-style: italic; color: #475569; margin-bottom: 8px;">${escapeHtml(state.tagline)}</div>
+      <div style="font-size: 12.5px; color: #1e293b; margin-bottom: 4px;">
+        <strong style="color: #0f172a;">Direct:</strong> <a href="tel:${escapeHtml(cleanTel)}" style="color: #334155; text-decoration: none;">${escapeHtml(state.phone)}</a> &nbsp;<span style="color: #cbd5e1;">|</span>&nbsp; <strong style="color: #0f172a;">Email:</strong> <a href="mailto:${escapeHtml(state.email)}" style="color: ${escapeHtml(state.color)}; text-decoration: none;">${escapeHtml(state.email)}</a>
+      </div>
+      <div style="font-size: 12.5px;">
+        <a href="${escapeHtml(state.linkedin || 'https://www.linkedin.com/')}" target="_blank" style="color: #0a66c2; font-weight: 700; text-decoration: underline;">LinkedIn Profile</a>${whatsappHtml}
+      </div>
+    </td>
+  </tr>
+</table>`;
+    }
+
+    function render() {
+      const container = document.getElementById('signaturePreviewContainer');
+      container.innerHTML = buildSignatureHtml();
+    }
+
+    function copySignature() {
+      const container = document.getElementById('signaturePreviewContainer');
+      const htmlContent = buildSignatureHtml();
+      const plainContent = `${state.name}\n${state.title}\n${state.tagline}\nDirect: ${state.phone} | Email: ${state.email}\nLinkedIn Profile: ${state.linkedin}`;
+
+      const showSuccess = () => {
+        const btnText = document.getElementById('copyBtnText');
+        const toast = document.getElementById('toastBanner');
+        btnText.textContent = 'Copied! Ready to Paste';
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+          btnText.textContent = 'Copy Signature for Gmail';
+        }, 3000);
+      };
+
+      if (navigator.clipboard && window.ClipboardItem) {
+        try {
+          const item = new ClipboardItem({
+            'text/html': new Blob([htmlContent], { type: 'text/html' }),
+            'text/plain': new Blob([plainContent], { type: 'text/plain' })
+          });
+          navigator.clipboard.write([item]).then(showSuccess).catch(() => {
+            fallbackCopy(container, showSuccess);
+          });
+          return;
+        } catch (err) {
+          fallbackCopy(container, showSuccess);
+          return;
+        }
+      }
+      fallbackCopy(container, showSuccess);
+    }
+
+    function fallbackCopy(container, callback) {
+      const range = document.createRange();
+      range.selectNodeContents(container);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      try {
+        document.execCommand('copy');
+      } catch (e) {}
+      callback();
+    }
+
+    document.getElementById('copyBtn').addEventListener('click', copySignature);
+
+    ['Name', 'Title', 'Tagline', 'Phone', 'Email', 'Linkedin'].forEach((field) => {
+      const el = document.getElementById('input' + field);
+      el.addEventListener('input', (e) => {
+        state[field.toLowerCase()] = e.target.value;
+        render();
+      });
+    });
+
+    document.getElementById('swapEmailBtn').addEventListener('click', () => {
+      const emailInput = document.getElementById('inputEmail');
+      state.email = state.email.toLowerCase() === 'raffayrohan@gmail.com'
+        ? 'malikmohammadrohan@gmail.com'
+        : 'Raffayrohan@gmail.com';
+      emailInput.value = state.email;
+      render();
+    });
+
+    document.getElementById('toggleWhatsapp').addEventListener('change', (e) => {
+      state.showWhatsapp = e.target.checked;
+      render();
+    });
+
+    document.querySelectorAll('.color-swatch').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.color = btn.getAttribute('data-color');
+        document.querySelectorAll('.color-swatch').forEach((b) => {
+          b.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-600');
+        });
+        btn.classList.add('ring-2', 'ring-offset-2', 'ring-blue-600');
+        render();
+      });
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      state.name = 'Muhammad Rohan';
+      state.title = 'LOCAL SEO & GOOGLE MAPS SPECIALIST';
+      state.tagline = 'Helping Home Improvement & Tree Care Contractors Rank in the Top 3 Map Pack';
+      state.phone = '+92 312 6664041';
+      state.email = 'Raffayrohan@gmail.com';
+      state.linkedin = 'https://www.linkedin.com/';
+      state.color = '#1a73e8';
+      state.showWhatsapp = false;
+
+      document.getElementById('inputName').value = state.name;
+      document.getElementById('inputTitle').value = state.title;
+      document.getElementById('inputTagline').value = state.tagline;
+      document.getElementById('inputPhone').value = state.phone;
+      document.getElementById('inputEmail').value = state.email;
+      document.getElementById('inputLinkedin').value = state.linkedin;
+      document.getElementById('toggleWhatsapp').checked = false;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
